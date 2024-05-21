@@ -1,0 +1,6 @@
+[laptop]
+ubuntu-pc   ansible_connection=local
+
+[pis]
+pi3
+pi5
