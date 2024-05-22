@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    stages {
+        stage('Clone repo') {
+            steps {
+                git branch: 'main', credentialsId: 'marcusc', url: 'git@github.com:flathunt/ansible.git'            }
+        }
+        stage('Run interactive ansible on pis') {
+            steps {
+                sh '''
+                sudo -u marcusc ansible pis -i inventory -m file -a "path=/tmp/arse state=directory"
+                '''
+            }
+        }
+        stage('Run interactive ansible on laptop') {
+            steps {
+                sh '''
+                sudo -u marcusc ansible laptop -i inventory -m file -a "path=/tmp/arse state=directory"
+                '''
+            }
+        }
+    }
+}
