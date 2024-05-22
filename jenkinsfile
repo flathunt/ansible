@@ -1,5 +1,7 @@
 pipeline {
     agent any
+    parameters {
+        choice(name: 'HOST', choices: ['laptop', 'pi3', 'pi5'], description: 'Pick host')
     stages {
         stage('Clone repo') {
             steps {
@@ -7,9 +9,8 @@ pipeline {
         }
         stage('Run interactive ansible on pis') {
             steps {
-                input message: 'Which host?', ok: 'Go', parameters: [choice(choices: ['laptop', 'pi3', 'pi5'], name: 'host')], submitterParameter: 'host'
 		sh '''
-                sudo -u marcusc ansible ${params.host} -i inventory -m setup
+                sudo -u marcusc ansible ${params.HOST} -i inventory -m setup
                 '''
             }
         }
