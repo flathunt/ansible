@@ -9,14 +9,7 @@ pipeline {
             steps {
                 input message: 'Which host?', ok: 'Go', parameters: [choice(choices: ['laptop', 'pi3', 'pi5'], name: 'host')], submitterParameter: 'host'
 		sh '''
-                sudo -u marcusc $host pis -i inventory -m setup
-                '''
-            }
-        }
-        stage('Run interactive ansible on laptop') {
-            steps {
-                sh '''
-                sudo -u marcusc ansible laptop -i inventory -m setup
+                sudo -u marcusc ansible ${params.host} -i inventory -m setup
                 '''
             }
         }
