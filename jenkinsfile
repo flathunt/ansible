@@ -10,9 +10,7 @@ pipeline {
         }
         stage('Run interactive ansible on pis') {
             steps {
-		sh '''
-                sudo -u marcusc ansible ${params.HOST} -i inventory -m setup
-                '''
+		sh "sudo -u marcusc ansible ${params.HOST} -i inventory -m setup"
             }
         }
     }
