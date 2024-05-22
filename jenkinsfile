@@ -15,7 +15,7 @@ pipeline {
         stage('Run interactive ansible on laptop') {
             steps {
                 sh '''
-                sudo -u marcusc ansible laptop -i inventory -m setup"
+                sudo -u marcusc ansible laptop -i inventory -m setup
                 '''
             }
         }
