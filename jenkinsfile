@@ -2,6 +2,7 @@ pipeline {
     agent any
     parameters {
         choice(name: 'HOST', choices: ['laptop', 'pi3', 'pi5'], description: 'Pick host')
+    }
     stages {
         stage('Clone repo') {
             steps {
