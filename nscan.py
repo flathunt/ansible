@@ -1,5 +1,5 @@
 import nmap
-import pandas as pd
+from tabulate import tabulate
 
 def scan_network(network_range):
     # Initialize the Nmap PortScanner
@@ -21,17 +21,19 @@ def scan_network(network_range):
     return devices
 
 def format_devices(devices):
-    # Create a DataFrame to format the list of devices
-    df = pd.DataFrame(devices)
-    return df
+    # Create a list of lists to format the list of devices for tabulate
+    formatted_devices = [["IP Address", "Hostname", "State"]]
+    for device in devices:
+        formatted_devices.append([device['IP Address'], device['Hostname'], device['State']])
+    return formatted_devices
 
 def main():
     network_range = '192.168.68.0/24'  # Adjust this to match your network range
     devices = scan_network(network_range)
     formatted_devices = format_devices(devices)
     
-    # Display the formatted list of devices
-    print(formatted_devices.to_string(index=False))
+    # Display the formatted list of devices in ASCII table
+    print(tabulate(formatted_devices, headers="firstrow", tablefmt="grid"))
 
 if __name__ == '__main__':
     main()
