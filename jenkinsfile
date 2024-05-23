@@ -24,7 +24,7 @@ pipeline {
         stage('Run interactive ansible on pis') {
             steps {
 		ansiColor('xterm') {
-		    sh "sudo -u marcusc ansible ${params.HOST} -i jenkinv -m setup"
+		    sh "sudo -u marcusc ansible ${env.HOST} -i jenkinv -m setup"
                 }
             }
         }
