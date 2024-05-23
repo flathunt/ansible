@@ -15,8 +15,9 @@ pipeline {
             steps {
 	        sh '''
 		    sudo python3 -m venv venv
-                    . ./venv/bin/activate
-		    sudo pip install python-nmap tabulate
+		    sudo venv/bin/python3 -m pip install python-nmap tabulate
+                    sudo . ./venv/bin/activate
+		    sudo venv/bin/python3 -m pip install python-nmap tabulate
                     sudo python3 nscan.py
                 '''
             }
