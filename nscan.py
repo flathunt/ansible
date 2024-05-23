@@ -1,39 +1,46 @@
-import nmap
-from tabulate import tabulate
+import subprocess
+import re
 
 def scan_network(network_range):
-    # Initialize the Nmap PortScanner
-    nm = nmap.PortScanner()
+    # Run the Nmap ping scan using subprocess
+    result = subprocess.run(['nmap', '-sn', network_range], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     
-    # Scan the network range for live hosts
-    nm.scan(hosts=network_range, arguments='-sn')
+    # Check for errors
+    if result.returncode != 0:
+        print("Error running Nmap scan:", result.stderr)
+        return []
     
-    # Extract the list of pingable devices
+    # Extract pingable devices from the Nmap output
     devices = []
-    for host in nm.all_hosts():
-        if nm[host].state() == 'up':
-            devices.append({
-                'IP Address': host,
-                'Hostname': nm[host].hostname(),
-                'State': nm[host].state()
-            })
-    
+    current_ip = None
+    for line in result.stdout.splitlines():
+        if "Nmap scan report for" in line:
+            current_ip = re.search(r'Nmap scan report for ([\d.]+)', line)
+            if current_ip:
+                current_ip = current_ip.group(1)
+        elif "Host is up" in line and current_ip:
+            devices.append(current_ip)
+            current_ip = None
+
     return devices
 
 def format_devices(devices):
-    # Create a list of lists to format the list of devices for tabulate
-    formatted_devices = [["IP Address", "Hostname", "State"]]
+    # Create a formatted ASCII table for the list of devices
+    table = "IP Address\n" + "-"*40 + "\n"
     for device in devices:
-        formatted_devices.append([device['IP Address'], device['Hostname'], device['State']])
-    return formatted_devices
+        table += f"{device}\n"
+    return table
 
 def main():
     network_range = '192.168.68.0/24'  # Adjust this to match your network range
     devices = scan_network(network_range)
-    formatted_devices = format_devices(devices)
     
-    # Display the formatted list of devices in ASCII table
-    print(tabulate(formatted_devices, headers="firstrow", tablefmt="grid"))
+    if devices:
+        formatted_devices = format_devices(devices)
+        # Display the formatted list of devices in ASCII table
+        print(formatted_devices)
+    else:
+        print("No devices found or an error occurred.")
 
 if __name__ == '__main__':
     main()
