@@ -3,5 +3,4 @@ ubuntu-pc   ansible_ssh_host=192.168.68.40
 
 [pis]
 pi3 ansible_ssh_host=cottrellsoflondon.com
-#pi5:225 ansible_ssh_host=cottrellsoflondon.com
 pi5 ansible_connection=local

@@ -1,0 +1,6 @@
+[laptop]
+ubuntu-pc   ansible_connection=local
+
+[pis]
+pi3 ansible_ssh_host=cottrellsoflondon.com
+pi5:225 ansible_ssh_host=cottrellsoflondon.com
