@@ -1,13 +1,23 @@
 pipeline {
     agent any
-    parameters {
-        choice(name: 'HOST', choices: ['laptop', 'pi3', 'pi5'], description: 'Pick host')
-    }
+
+    def nodes = [
+        laptop,
+        pi3,
+        pi5,
+    ]
+
     stages {
+	stage('User input') {
+            parameters {
+                choice(name: 'HOST', choices: nodes, description: 'Pick host')
+            }
+        }
         stage('Clone repo') {
             steps {
-                git branch: 'main', credentialsId: 'marcusc', url: 'git@github.com:flathunt/ansible.git'            }
-        }
+                git branch: 'main', credentialsId: 'marcusc', url: 'git@github.com:flathunt/ansible.git'
+            }
+        }    
         stage('Run interactive ansible on pis') {
             steps {
 		sh "sudo -u marcusc ansible ${params.HOST} -i inventory -m setup"
