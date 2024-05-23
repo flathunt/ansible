@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    options {
+        ansiColor('xterm')
+    }
+
+    stages {
+        stage('Clone repo') {
+            steps {
+                git branch: 'main', credentialsId: 'marcusc', url: 'git@github.com:flathunt/ansible.git'
+            }
+        }    
+        stage('Run nmap') {
+            steps {
+	        sh '''
+                    source venv/bin/activate
+                    sudo python3 nscan.py
+                '''
+            }
+        }
+    }
+}
