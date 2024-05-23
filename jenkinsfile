@@ -4,16 +4,18 @@ def nodes = [
     "pi5",
 ]
 
-properties([
-    parameters([
-        choice(name: 'HOST', choices: nodes, description: 'Pick host')
-    ])
-])
 
 pipeline {
     agent any
 
     stages {
+        stage('Input') {
+            steps {
+                script {
+                    env.HOST = input message: 'Pick host', parameters: [choice(name: 'HOST', choices: nodes)]
+                }
+            }
+        }
         stage('Clone repo') {
             steps {
                 git branch: 'main', credentialsId: 'marcusc', url: 'git@github.com:flathunt/ansible.git'
