@@ -1,16 +1,20 @@
 pipeline {
     agent any
 
-    def nodes = [
-        laptop,
-        pi3,
-        pi5,
-    ]
+    environment {
+        def nodes = [
+            laptop,
+            pi3,
+            pi5,
+        ]
+    }
 
     stages {
 	stage('User input') {
-            parameters {
-                choice(name: 'HOST', choices: nodes, description: 'Pick host')
+            steps {
+                parameters {
+                    choice(name: 'HOST', choices: nodes, description: 'Pick host')
+                }
             }
         }
         stage('Clone repo') {
