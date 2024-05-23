@@ -3,9 +3,9 @@ pipeline {
 
     environment {
         def nodes = [
-            laptop,
-            pi3,
-            pi5,
+            "laptop",
+            "pi3",
+            "pi5",
         ]
     }
 
