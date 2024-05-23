@@ -8,6 +8,10 @@ def nodes = [
 pipeline {
     agent any
 
+    options {
+        ansiColor('xterm')
+    }
+
     stages {
         stage('Input') {
             steps {
@@ -23,9 +27,7 @@ pipeline {
         }    
         stage('Run interactive ansible on pis') {
             steps {
-		ansiColor('xterm') {
-		    sh "sudo -u marcusc ansible ${env.HOST} -i jenkinv -m setup"
-                }
+	        sh "sudo -u marcusc ansible ${env.HOST} -i jenkinv -m setup"
             }
         }
     }
