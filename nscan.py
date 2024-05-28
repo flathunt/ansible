@@ -35,9 +35,9 @@ def scan_network(network_range):
 
 def format_devices(devices):
     # Create a formatted ASCII table for the list of devices
-    table = "IP Address        MAC Address         Device\n" + "-"*60 + "\n"
+    table = "IP Address                            MAC Address         Device\n" + "-"*60 + "\n"
     for device in devices:
-        table += f"{device['IP Address']:18} {device['MAC Address']:18} {device['Device']}\n"
+        table += f"{device['IP Address']:38} {device['MAC Address']:18} {device['Device']}\n"
     return table
 
 def main():
