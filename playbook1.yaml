@@ -1,0 +1,21 @@
+---
+hosts: pis
+
+tasks:
+  - name: check python version
+    command: python --version
+    register: python_version
+
+  - name: print python version
+    debug:
+      var: python_version.stdout
+
+  - name: copy nscan script across
+    copy:
+      src: nscan.py
+      dest: /home/marcusc/nscan.py
+      mode: 0755
+
+  - name: run nscan script 
+    command: python3 /home/marcusc/nscan.py
+    register: nscan_output
